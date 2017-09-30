@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+</head>
+<body>
+    <h1>Website Foo</h1>
+    <div id="message-holder"></div>
+    <script type='text/javascript'>
+        (function (){
+            var helperFrame = document.createElement('iframe');
+            helperFrame.src = '//api.helperframe.dev:3003/helper.html';
+            helperFrame.id = 'helperFrame';
+            helperFrame.style = 'display:none;';
+            var body = document.getElementsByTagName('body')[0];
+            body.appendChild(helperFrame);
+        })();
+    </script>
+    <script>
+
+        window.onload = () => {
+
+            let helperFrameWindow = document.getElementById('helperFrame').contentWindow;
+
+            let getUserId = () => {
+                helperFrameWindow.postMessage('getUserId', '*');
+            }
+
+            // Capture incoming messages from helper frame
+            window.addEventListener('message', (event) => {
+                document.getElementById('message-holder').innerHTML = 'Website Foo - User ID: ' + event.data;
+            });
+
+            getUserId();
+
+        }
+    </script>
+</body>
+</html>

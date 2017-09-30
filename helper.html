@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Helper</title>
+    <script type="text/javascript">
+
+        let callbacks = {
+            setUserId: () => {
+                if (localStorage.getItem('userId') === null) {
+                    localStorage.setItem('userId', Math.random().toString().substr(2));
+                }
+            },
+            getUserId: () => {
+                window.parent.postMessage(localStorage.getItem('userId'),  '*')
+            }
+        }
+
+        window.addEventListener('message', () => {
+            callbacks[event.data]();
+        });
+
+        // Set User Id by default when frame loaded
+        // It can be triggered from parent frame also
+        callbacks.setUserId();
+
+    </script>
+</head>
+<body></body>
+</html>
